@@ -1,0 +1,18 @@
+type User {
+    username: String
+    email: String
+}
+
+type Litable {
+    id: ID
+    city: String
+    rent: String
+    imageUrl: [String]
+}
+
+type Query {
+    user: User
+    getAllLitable: Litable
+} 
+
+ 
