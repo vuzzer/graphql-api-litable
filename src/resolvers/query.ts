@@ -1,19 +1,19 @@
-import { QueryResolvers } from "generated/graphql";
+import { QueryResolvers } from "generated/graphql.js";
 import Litable from "../models/litable.js";
 
 export const queries: QueryResolvers =  {
-        getAllLitable: ()=>{
-
-            //Fetch Data from MongoDB
-            Litable.find().then((data)=>{
-                console.log(data)
-            });
-            
-            return {id: "id", city: "Quebec", rent: "2000", imageUrl: ["kjsfjslj"] } 
+        getAllLitable: async ()=>{
+            const data = await Litable.find();
+            if(data.length > 0){
+                let litables = data.map((litable) => {
+                    return {id: litable.id, street: litable.street, rent: litable.rent.toString(), imageUrl: litable.imageUrl, city: litable.city}
+                })
+                return litables
+            }
+            return []
         },
         user: () => {
             let user = { username: "Parfait", email:"kk"}
             return user;
-        },
-
+        }
 }

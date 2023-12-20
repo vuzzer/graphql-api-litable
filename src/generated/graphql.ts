@@ -18,14 +18,15 @@ export type Scalars = {
 export type Litable = {
   __typename?: 'Litable';
   city?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
   imageUrl?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   rent?: Maybe<Scalars['String']['output']>;
+  street?: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  getAllLitable?: Maybe<Litable>;
+  getAllLitable?: Maybe<Array<Litable>>;
   user?: Maybe<User>;
 };
 
@@ -107,6 +108,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Litable: ResolverTypeWrapper<Litable>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -116,6 +118,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  ID: Scalars['ID']['output'];
   Litable: Litable;
   Query: {};
   String: Scalars['String']['output'];
@@ -124,14 +127,15 @@ export type ResolversParentTypes = {
 
 export type LitableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Litable'] = ResolversParentTypes['Litable']> = {
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   rent?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getAllLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType>;
+  getAllLitable?: Resolver<Maybe<Array<ResolversTypes['Litable']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
