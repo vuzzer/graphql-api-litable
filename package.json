@@ -9,7 +9,7 @@
     "start": "tsc && node dist/app.js",
     "dev": "yarn run codegen && nodemon",
     "lint": "eslint . --ext .ts",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts --watch"
   },
   "author": "N'dri Bienvenu Parfait Kouassi",
   "license": "ISC",

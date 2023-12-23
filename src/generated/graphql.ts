@@ -27,7 +27,13 @@ export type Litable = {
 export type Query = {
   __typename?: 'Query';
   getAllLitable?: Maybe<Array<Litable>>;
+  getLitableById?: Maybe<Litable>;
   user?: Maybe<User>;
+};
+
+
+export type QueryGetLitableByIdArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type User = {
@@ -136,6 +142,7 @@ export type LitableResolvers<ContextType = any, ParentType extends ResolversPare
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllLitable?: Resolver<Maybe<Array<ResolversTypes['Litable']>>, ParentType, ContextType>;
+  getLitableById?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<QueryGetLitableByIdArgs>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
