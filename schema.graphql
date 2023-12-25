@@ -11,9 +11,21 @@ type Litable {
     imageUrl: [String]
 }
 
+type MetaData {
+    numberPage: Int
+    currentPage: Int  
+    itemsByPage: Int
+}
+
+type Data {
+    litable: [Litable!]
+    metadata: MetaData!
+}
+
+
 type Query {
     user: User
-    getAllLitable: [Litable!]
+    getAllLitable: Data
     getLitableById(id: ID): Litable!
 } 
 
