@@ -25,7 +25,7 @@ export const queries: QueryResolvers =  {
                 numberPages += countDocuments % itemsByPage === 0 ? 0 : 1
         
                 let litables = litablesData.map((litable) => {
-                    return {id: litable.id, street: litable.street, rent: litable.rent.toString(), imageUrl: litable.imageUrl, city: litable.city}
+                    return {id: litable.id, street: litable.street, rent: litable.rent, imageUrl: litable.imageUrl, city: litable.city}
                 })
 
                 // Data type to return

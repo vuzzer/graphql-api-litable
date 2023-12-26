@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -26,13 +27,21 @@ export type Litable = {
   city?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   imageUrl?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  rent?: Maybe<Scalars['String']['output']>;
+  rent?: Maybe<Scalars['Float']['output']>;
   street?: Maybe<Scalars['String']['output']>;
 };
 
 export type LitableInput = {
   city: Scalars['String']['input'];
   imageUrl?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  rent: Scalars['Float']['input'];
+  street: Scalars['String']['input'];
+};
+
+export type LitableUpdate = {
+  city: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  imageUrl: Array<InputMaybe<Scalars['String']['input']>>;
   rent: Scalars['Float']['input'];
   street: Scalars['String']['input'];
 };
@@ -47,11 +56,23 @@ export type MetaData = {
 export type Mutation = {
   __typename?: 'Mutation';
   addLitable?: Maybe<Litable>;
+  deleteLitable?: Maybe<Litable>;
+  updateLitable?: Maybe<Litable>;
 };
 
 
 export type MutationAddLitableArgs = {
   input?: InputMaybe<LitableInput>;
+};
+
+
+export type MutationDeleteLitableArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateLitableArgs = {
+  update?: InputMaybe<LitableUpdate>;
 };
 
 export type Query = {
@@ -150,6 +171,7 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Litable: ResolverTypeWrapper<Litable>;
   LitableInput: LitableInput;
+  LitableUpdate: LitableUpdate;
   MetaData: ResolverTypeWrapper<MetaData>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -166,6 +188,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']['output'];
   Litable: Litable;
   LitableInput: LitableInput;
+  LitableUpdate: LitableUpdate;
   MetaData: MetaData;
   Mutation: {};
   Query: {};
@@ -183,7 +206,7 @@ export type LitableResolvers<ContextType = any, ParentType extends ResolversPare
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  rent?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  rent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -197,6 +220,8 @@ export type MetaDataResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationAddLitableArgs>>;
+  deleteLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, RequireFields<MutationDeleteLitableArgs, 'id'>>;
+  updateLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationUpdateLitableArgs>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

@@ -1,7 +1,7 @@
-import { MutationResolvers } from "generated/graphql";
+import { MutationResolvers } from "generated/graphql.js";
 import LitableModel from "../models/litable.js";
 
-export const mutation: MutationResolvers = {
+export const mutations: MutationResolvers = {
   addLitable: async (_, { input }) => {
     //Create an Litable object
     const litable = new LitableModel({
@@ -16,7 +16,7 @@ export const mutation: MutationResolvers = {
       return {
         id: result.id,
         street: result.street,
-        rent: result.rent.toString(),
+        rent: result.rent,
         city: result.city,
         imageUrl: result.imageUrl,
       };
@@ -25,12 +25,27 @@ export const mutation: MutationResolvers = {
     }
   },
 
-/*   updateLitable: async(_, {update}) => {
+ updateLitable: async(_, {update}) => { 
     // filter parameter
     const filter = {_id: Object(update.id)}
     // fields to update
-    const fields = update.filter((field) => field !== undefined)
-  } */
+    const fields = {city: update.city, rent: update.rent, imageUrl: update.imageUrl, street: update.street}
+    
+    // update litable with ID
+    let litableUpdate = await LitableModel.findOneAndUpdate(filter, fields, {new: true})
+
+    return {id: litableUpdate.id, city: litableUpdate.city, rent: litableUpdate.rent, imageUrl: litableUpdate.imageUrl, street: litableUpdate.street}
+  },
+
+  deleteLitable: async(_, {id}) => {
+    const deleted = await LitableModel.findByIdAndDelete({_id:id})
+    if(deleted){
+        const {value} = deleted 
+        return {id: value.id, rent: value.rent, street: value.street, city: value.city, imageUrl: value.imageUrl }
+    }
+    return {}
+  }
+
 };
 
 
