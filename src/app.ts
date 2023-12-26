@@ -6,6 +6,7 @@ import gql from "graphql-tag";
 import { readFileSync } from "fs";
 import mongoose from "mongoose";
 import express from "express";
+import logger from "morgan"
 const app = express();
 
 const port = 8888 ;
@@ -18,6 +19,9 @@ const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
 });
 await server.start();
+
+// Debug
+app.use(logger("dev"))
 
 // Middleware that parse http request to json
 app.use(express.json());

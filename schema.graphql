@@ -25,7 +25,7 @@ type Data {
 
 type Query {
     user: User
-    getAllLitable: Data
+    getAllLitable: Data!
     getLitableById(id: ID): Litable!
 } 
 

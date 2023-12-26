@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -13,6 +14,12 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+};
+
+export type Data = {
+  __typename?: 'Data';
+  litable?: Maybe<Array<Litable>>;
+  metadata: MetaData;
 };
 
 export type Litable = {
@@ -24,11 +31,23 @@ export type Litable = {
   street?: Maybe<Scalars['String']['output']>;
 };
 
+export type MetaData = {
+  __typename?: 'MetaData';
+  currentPage?: Maybe<Scalars['Int']['output']>;
+  itemsByPage?: Maybe<Scalars['Int']['output']>;
+  numberPage?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  getAllLitable?: Maybe<Array<Litable>>;
+  getAllLitable: Data;
   getLitableById: Litable;
   user?: Maybe<User>;
+};
+
+
+export type QueryGetAllLitableArgs = {
+  indexPage: Scalars['Int']['input'];
 };
 
 
@@ -114,8 +133,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Data: ResolverTypeWrapper<Data>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Litable: ResolverTypeWrapper<Litable>;
+  MetaData: ResolverTypeWrapper<MetaData>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
@@ -124,11 +146,20 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  Data: Data;
   ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
   Litable: Litable;
+  MetaData: MetaData;
   Query: {};
   String: Scalars['String']['output'];
   User: User;
+};
+
+export type DataResolvers<ContextType = any, ParentType extends ResolversParentTypes['Data'] = ResolversParentTypes['Data']> = {
+  litable?: Resolver<Maybe<Array<ResolversTypes['Litable']>>, ParentType, ContextType>;
+  metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type LitableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Litable'] = ResolversParentTypes['Litable']> = {
@@ -140,8 +171,15 @@ export type LitableResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MetaDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['MetaData'] = ResolversParentTypes['MetaData']> = {
+  currentPage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  itemsByPage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  numberPage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getAllLitable?: Resolver<Maybe<Array<ResolversTypes['Litable']>>, ParentType, ContextType>;
+  getAllLitable?: Resolver<ResolversTypes['Data'], ParentType, ContextType, RequireFields<QueryGetAllLitableArgs, 'indexPage'>>;
   getLitableById?: Resolver<ResolversTypes['Litable'], ParentType, ContextType, Partial<QueryGetLitableByIdArgs>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -153,7 +191,9 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type Resolvers<ContextType = any> = {
+  Data?: DataResolvers<ContextType>;
   Litable?: LitableResolvers<ContextType>;
+  MetaData?: MetaDataResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
