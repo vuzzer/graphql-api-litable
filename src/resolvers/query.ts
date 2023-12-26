@@ -1,4 +1,4 @@
-import { DataResolvers, MetaDataResolvers, QueryResolvers, Data } from "generated/graphql.js";
+import {  QueryResolvers, Data } from "generated/graphql.js";
 import Litable from "../models/litable.js";
 
 export const queries: QueryResolvers =  {
@@ -8,7 +8,6 @@ export const queries: QueryResolvers =  {
 
             // Get all litable data
             const litables = await Litable.find();
-
 
             // Fetch data and pagination info
             if(litables.length > 0){
@@ -25,21 +24,22 @@ export const queries: QueryResolvers =  {
                 numberPages += countDocuments % data.metadata.itemsByPage === 0 ? 0 : 1
              
                 data.metadata.numberPage = numberPages
+
+                console.log(data)
                 
                 data.litable = litables.map((litable) => {
-                    console.log(litable)
                     return {id: litable.id, street: litable.street, rent: litable.rent.toString(), imageUrl: litable.imageUrl, city: litable.city}
                 })
+                return data
             }
-            
             return data
         },
         user: () => {
             let user = { username: "Parfait", email:"kk"}
             return user;
         },
-        getLitableById: async (_, content) => {
-            const data = await Litable.findById({_id: Object(content.id)})
+        getLitableById: async (_, {id}) => {
+            const data = await Litable.findById({_id: Object(id)})
             
             // Store response data to return
             let litable = {}
