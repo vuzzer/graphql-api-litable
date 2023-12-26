@@ -17,8 +17,8 @@ export type Scalars = {
 
 export type Data = {
   __typename?: 'Data';
-  litable?: Maybe<Array<Litable>>;
-  metadata: MetaData;
+  litable?: Maybe<Array<Maybe<Litable>>>;
+  metadata?: Maybe<MetaData>;
 };
 
 export type Litable = {
@@ -30,6 +30,13 @@ export type Litable = {
   street?: Maybe<Scalars['String']['output']>;
 };
 
+export type LitableInput = {
+  city: Scalars['String']['input'];
+  imageUrl?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  rent: Scalars['Float']['input'];
+  street: Scalars['String']['input'];
+};
+
 export type MetaData = {
   __typename?: 'MetaData';
   currentPage?: Maybe<Scalars['Int']['output']>;
@@ -37,10 +44,20 @@ export type MetaData = {
   numberPage?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  addLitable?: Maybe<Litable>;
+};
+
+
+export type MutationAddLitableArgs = {
+  input?: InputMaybe<LitableInput>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  getAllLitable: Data;
-  getLitableById: Litable;
+  getAllLitable?: Maybe<Data>;
+  getLitableById?: Maybe<Litable>;
   user?: Maybe<User>;
 };
 
@@ -128,10 +145,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Data: ResolverTypeWrapper<Data>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Litable: ResolverTypeWrapper<Litable>;
+  LitableInput: LitableInput;
   MetaData: ResolverTypeWrapper<MetaData>;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
@@ -141,18 +161,21 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Data: Data;
+  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Litable: Litable;
+  LitableInput: LitableInput;
   MetaData: MetaData;
+  Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
   User: User;
 };
 
 export type DataResolvers<ContextType = any, ParentType extends ResolversParentTypes['Data'] = ResolversParentTypes['Data']> = {
-  litable?: Resolver<Maybe<Array<ResolversTypes['Litable']>>, ParentType, ContextType>;
-  metadata?: Resolver<ResolversTypes['MetaData'], ParentType, ContextType>;
+  litable?: Resolver<Maybe<Array<Maybe<ResolversTypes['Litable']>>>, ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['MetaData']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -172,9 +195,13 @@ export type MetaDataResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationAddLitableArgs>>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getAllLitable?: Resolver<ResolversTypes['Data'], ParentType, ContextType>;
-  getLitableById?: Resolver<ResolversTypes['Litable'], ParentType, ContextType, Partial<QueryGetLitableByIdArgs>>;
+  getAllLitable?: Resolver<Maybe<ResolversTypes['Data']>, ParentType, ContextType>;
+  getLitableById?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<QueryGetLitableByIdArgs>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
@@ -188,6 +215,7 @@ export type Resolvers<ContextType = any> = {
   Data?: DataResolvers<ContextType>;
   Litable?: LitableResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

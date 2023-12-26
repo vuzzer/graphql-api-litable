@@ -18,15 +18,34 @@ type MetaData {
 }
 
 type Data {
-    litable: [Litable!]
-    metadata: MetaData!
+    litable: [Litable]
+    metadata: MetaData
 }
 
+input LitableInput{
+    city: String!
+    rent: Float!
+    street: String!
+    imageUrl: [String]
+} 
+
+input LitableUpdate {
+    id: ID!
+    city: String
+    rent: Float
+    street: String
+    imageUrl: [String]
+}
 
 type Query {
     user: User
-    getAllLitable: Data!
-    getLitableById(id: ID): Litable!
+    getAllLitable: Data
+    getLitableById(id: ID): Litable
 } 
+
+type Mutation {
+    addLitable(input: LitableInput ): Litable
+    updateLitable(update: LitableUpdate): Litable
+}
 
  

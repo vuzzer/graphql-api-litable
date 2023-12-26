@@ -7,30 +7,30 @@ export const queries: QueryResolvers =  {
             let data: Data;
 
             // Get all litable data
-            const litables = await Litable.find();
+            let litablesData = await Litable.find();
 
             // Fetch data and pagination info
-            if(litables.length > 0){
+            if(litablesData.length > 0){
                 // Get number of documents
                 let countDocuments = await Litable.countDocuments()
 
                 // metadata pagination include defaut page, number of items by page and number page
-                data.metadata.currentPage =  1
+                let currentPage =  1
 
-                data.metadata.itemsByPage = 3
+                let itemsByPage = 3
 
-                let numberPages = countDocuments / data.metadata.itemsByPage
+                // Make simple division
+                let numberPages = Math.floor(countDocuments / itemsByPage)
 
-                numberPages += countDocuments % data.metadata.itemsByPage === 0 ? 0 : 1
-             
-                data.metadata.numberPage = numberPages
-
-                console.log(data)
-                
-                data.litable = litables.map((litable) => {
+                numberPages += countDocuments % itemsByPage === 0 ? 0 : 1
+        
+                let litables = litablesData.map((litable) => {
                     return {id: litable.id, street: litable.street, rent: litable.rent.toString(), imageUrl: litable.imageUrl, city: litable.city}
                 })
-                return data
+
+                // Data type to return
+                data = { litable: litables, metadata: {currentPage: currentPage, itemsByPage: itemsByPage, numberPage: numberPages}}
+
             }
             return data
         },
