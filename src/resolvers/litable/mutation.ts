@@ -1,7 +1,7 @@
-import { MutationResolvers } from "generated/graphql.js";
-import LitableModel from "../models/litable.js";
+import { MutationLitableResolvers } from "generated/graphql.js";
+import LitableModel from "../../models/litable.js";
 
-export const mutations: MutationResolvers = {
+export const mutations: MutationLitableResolvers = {
   addLitable: async (_, { input }) => {
     //Create an Litable object
     const litable = new LitableModel({

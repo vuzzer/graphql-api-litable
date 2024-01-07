@@ -53,33 +53,42 @@ export type MetaData = {
   numberPage?: Maybe<Scalars['Int']['output']>;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
+export type MutationLitable = {
+  __typename?: 'MutationLitable';
   addLitable?: Maybe<Litable>;
   deleteLitable?: Maybe<Litable>;
   updateLitable?: Maybe<Litable>;
 };
 
 
-export type MutationAddLitableArgs = {
+export type MutationLitableAddLitableArgs = {
   input?: InputMaybe<LitableInput>;
 };
 
 
-export type MutationDeleteLitableArgs = {
+export type MutationLitableDeleteLitableArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateLitableArgs = {
+export type MutationLitableUpdateLitableArgs = {
   update?: InputMaybe<LitableUpdate>;
+};
+
+export type MutationUser = {
+  __typename?: 'MutationUser';
+  login?: Maybe<User>;
+};
+
+
+export type MutationUserLoginArgs = {
+  user?: InputMaybe<UserInfo>;
 };
 
 export type Query = {
   __typename?: 'Query';
   getAllLitable?: Maybe<Data>;
   getLitableById?: Maybe<Litable>;
-  user?: Maybe<User>;
 };
 
 
@@ -89,8 +98,20 @@ export type QueryGetLitableByIdArgs = {
 
 export type User = {
   __typename?: 'User';
-  email?: Maybe<Scalars['String']['output']>;
-  username?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  password?: Maybe<Scalars['String']['output']>;
+  photo?: Maybe<Scalars['String']['output']>;
+  role?: Maybe<Scalars['String']['output']>;
+  username: Scalars['String']['output'];
+};
+
+export type UserInfo = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  photo?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+  username: Scalars['String']['input'];
 };
 
 
@@ -173,10 +194,12 @@ export type ResolversTypes = {
   LitableInput: LitableInput;
   LitableUpdate: LitableUpdate;
   MetaData: ResolverTypeWrapper<MetaData>;
-  Mutation: ResolverTypeWrapper<{}>;
+  MutationLitable: ResolverTypeWrapper<MutationLitable>;
+  MutationUser: ResolverTypeWrapper<MutationUser>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
+  UserInfo: UserInfo;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -190,10 +213,12 @@ export type ResolversParentTypes = {
   LitableInput: LitableInput;
   LitableUpdate: LitableUpdate;
   MetaData: MetaData;
-  Mutation: {};
+  MutationLitable: MutationLitable;
+  MutationUser: MutationUser;
   Query: {};
   String: Scalars['String']['output'];
   User: User;
+  UserInfo: UserInfo;
 };
 
 export type DataResolvers<ContextType = any, ParentType extends ResolversParentTypes['Data'] = ResolversParentTypes['Data']> = {
@@ -218,21 +243,30 @@ export type MetaDataResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationAddLitableArgs>>;
-  deleteLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, RequireFields<MutationDeleteLitableArgs, 'id'>>;
-  updateLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationUpdateLitableArgs>>;
+export type MutationLitableResolvers<ContextType = any, ParentType extends ResolversParentTypes['MutationLitable'] = ResolversParentTypes['MutationLitable']> = {
+  addLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationLitableAddLitableArgs>>;
+  deleteLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, RequireFields<MutationLitableDeleteLitableArgs, 'id'>>;
+  updateLitable?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<MutationLitableUpdateLitableArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['MutationUser'] = ResolversParentTypes['MutationUser']> = {
+  login?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<MutationUserLoginArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllLitable?: Resolver<Maybe<ResolversTypes['Data']>, ParentType, ContextType>;
   getLitableById?: Resolver<Maybe<ResolversTypes['Litable']>, ParentType, ContextType, Partial<QueryGetLitableByIdArgs>>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -240,7 +274,8 @@ export type Resolvers<ContextType = any> = {
   Data?: DataResolvers<ContextType>;
   Litable?: LitableResolvers<ContextType>;
   MetaData?: MetaDataResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
+  MutationLitable?: MutationLitableResolvers<ContextType>;
+  MutationUser?: MutationUserResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

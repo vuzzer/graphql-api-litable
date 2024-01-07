@@ -1,8 +1,3 @@
-type User {
-    username: String
-    email: String
-}
-
 type Litable {
     id: ID
     city: String
@@ -38,12 +33,11 @@ input LitableUpdate {
 }
 
 type Query {
-    user: User
     getAllLitable: Data
     getLitableById(id: ID): Litable
 } 
 
-type Mutation {
+type MutationLitable {
     addLitable(input: LitableInput ): Litable
     updateLitable(update: LitableUpdate): Litable
     deleteLitable(id: ID!): Litable

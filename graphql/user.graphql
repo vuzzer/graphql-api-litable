@@ -1,0 +1,20 @@
+type User {
+    id: ID!
+    email: String!
+    username: String!
+    password: String
+    role: String
+    photo: String
+}
+
+input UserInfo {
+    username: String!
+    password: String!
+    email: String!
+    role: String
+    photo: String
+}
+
+type MutationUser {
+    login(user: UserInfo ):User
+}

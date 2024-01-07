@@ -1,5 +1,5 @@
 import {  QueryResolvers, Data } from "generated/graphql.js";
-import Litable from "../models/litable.js";
+import Litable from "../../models/litable.js";
 
 export const queries: QueryResolvers =  {
         getAllLitable: async ()=>{
@@ -33,10 +33,6 @@ export const queries: QueryResolvers =  {
 
             }
             return data
-        },
-        user: () => {
-            let user = { username: "Parfait", email:"kk"}
-            return user;
         },
         getLitableById: async (_, {id}) => {
             const data = await Litable.findById({_id: Object(id)})

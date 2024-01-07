@@ -4,5 +4,5 @@ import { Resolvers } from "generated/graphql.js";
 
 export const resolvers: Resolvers = {
     Query: queries,
-    Mutation: mutations
+    MutationLitable: mutations
 }
