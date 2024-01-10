@@ -6,8 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/app.js",
-    "dev": "yarn run codegen && nodemon",
+    "start": "node dist/app.js",
+    "build": "tsc && node dist/app.js",
+    "dev": "yarn run codegen && nodemon && build",
+    "dev:local": "nodemon", 
     "lint": "eslint . --ext .ts",
     "codegen": "graphql-codegen --config codegen.ts"
   },

@@ -1,7 +1,6 @@
 {
   "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node"
   },
   "compilerOptions": {
     "rootDirs": ["src"],
@@ -16,6 +15,6 @@
     "types": ["node"],
     "resolveJsonModule": true,
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

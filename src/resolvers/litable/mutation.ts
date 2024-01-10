@@ -1,4 +1,4 @@
-import { MutationLitableResolvers } from "generated/graphql.js";
+import { MutationLitableResolvers } from "../../generated/graphql.js";
 import LitableModel from "../../models/litable.js";
 
 export const mutations: MutationLitableResolvers = {

@@ -1,20 +1,28 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { resolvers } from "./resolvers/resolvers.js";
 import { buildSubgraphSchema } from "@apollo/subgraph";
 import gql from "graphql-tag";
 import { readFileSync } from "fs";
 import mongoose from "mongoose";
 import express from "express";
+import logger from "morgan";
+// Resolver, TypeDefs
+import { resolvers } from "./resolvers/litable/resolvers.js";
+import { mergeTypeDefs } from "@graphql-tools/merge";
 const app = express();
 const port = 8888;
-// Schema
-const typeDefs = gql(readFileSync("./schema.graphql", { encoding: "utf8" }));
+// Type Definition
+const litableType = gql(readFileSync("./graphql/litable.graphql", { encoding: "utf8" }));
+const userType = gql(readFileSync("./graphql/user.graphql", { encoding: "utf8" }));
+// Merge definition of graphql type
+const typeDefs = mergeTypeDefs([litableType, userType]);
 // Apollo server
 const server = new ApolloServer({
-    schema: buildSubgraphSchema({ typeDefs, resolvers }),
+    schema: buildSubgraphSchema([{ typeDefs, resolvers }]),
 });
 await server.start();
+// Debug
+app.use(logger("dev"));
 // Middleware that parse http request to json
 app.use(express.json());
 // Graphql route
