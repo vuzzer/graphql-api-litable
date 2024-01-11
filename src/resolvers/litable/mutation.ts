@@ -38,11 +38,11 @@ export const mutations: MutationLitableResolvers = {
   },
 
   deleteLitable: async(_, {id}) => {
-    const deleted = await LitableModel.findByIdAndDelete({_id:id})
+    /* const deleted = await LitableModel.findByIdAndDelete({_id:id})
     if(deleted){
         const {value} = deleted 
         return {id: value.id, rent: value.rent, street: value.street, city: value.city, imageUrl: value.imageUrl }
-    }
+    } */
     return {}
   }
 
