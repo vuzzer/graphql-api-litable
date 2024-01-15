@@ -1,7 +1,7 @@
-import { MutationLitableResolvers } from "../../generated/graphql.js";
+import { MutationResolvers } from "../../generated/graphql.js";
 import LitableModel from "../../models/litable.js";
 
-export const mutations: MutationLitableResolvers = {
+export const mutations: MutationResolvers = {
   addLitable: async (_, { input }) => {
     //Create an Litable object
     const litable = new LitableModel({
@@ -21,7 +21,8 @@ export const mutations: MutationLitableResolvers = {
         imageUrl: result.imageUrl,
       };
     } catch (e) {
-      console.log(e);
+      let error = new Error("Une erreur s'est produite")
+      throw error;
     }
   },
 

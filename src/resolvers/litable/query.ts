@@ -1,7 +1,7 @@
 import {  QueryResolvers, Data } from "generated/graphql.js";
 import Litable from "../../models/litable.js";
 
-export const queries: QueryResolvers =  {
+export const queries =  {
         getAllLitable: async ()=>{
             // Store response data
             let data: Data;

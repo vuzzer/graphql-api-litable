@@ -37,7 +37,7 @@ type Query {
     getLitableById(id: ID): Litable
 } 
 
-type MutationLitable {
+type Mutation {
     addLitable(input: LitableInput ): Litable
     updateLitable(update: LitableUpdate): Litable
     deleteLitable(id: ID!): Litable

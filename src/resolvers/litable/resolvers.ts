@@ -1,8 +1,13 @@
 import { mutations } from "./mutation.js";
 import { queries } from "./query.js";
 import { LitableResolvers, Resolvers } from "../../generated/graphql.js";
+import resolversClient from "resolvers/client/resolvers.js";
 
-export const resolvers: Resolvers<LitableResolvers> = {
+
+const resolvers = {
     Query: queries,
-    MutationLitable: mutations
+    Mutation: mutations,
 }
+
+
+export default  resolvers;

@@ -2,7 +2,7 @@ import { RoleUser } from "core/role_user";
 import mongoose from "mongoose";
 const {Schema} = mongoose;
 
-const userSchema = new Schema({
+const clientSchema = new Schema({
     username: String,
     email: String,
     password: String,
@@ -10,4 +10,4 @@ const userSchema = new Schema({
     role: {type: RoleUser, default: RoleUser.user }
 })
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("Client", clientSchema);
